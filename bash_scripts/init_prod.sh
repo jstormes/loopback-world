@@ -21,6 +21,11 @@ APACHE_PID=$!
 /usr/sbin/cron -f &
 CRON_PID=$!
 
+echo "**************************************************"
+echo "* LAMP Server is ready "
+echo "* Server IP address is $(hostname -i) "
+echo "**************************************************"
+
 while /bin/true; do
 
   if ! ps -p $MYSQL_PID > /dev/null
