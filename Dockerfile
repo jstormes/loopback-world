@@ -95,6 +95,7 @@ ADD apache_assets/100-loopback-world.conf /etc/apache2/sites-enabled/
 # Copy "*.loopback.world" cert into container.  Might be better to link it.
 ADD apache_assets/site.key /etc/ssl/certs/
 ADD apache_assets/site.crt /etc/ssl/certs/
+ADD apache_assets/gsalphasha2g2r1.crt /etc/ssl/certs/
 
 # Add our script files so they can be found
 ENV PATH /root/bin:$PATH
