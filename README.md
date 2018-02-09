@@ -23,16 +23,16 @@ A LAMP development docker container with Apache VHost and built in *.loopback.wo
  ```docker run -it -p 8080:80 -v %cd%:/var/www jstormes/loopback-world```
  
  
- This will use the directory name as the part of the domain name.  So if you have a folder called ```test\public``` 
- it will be served as http:\\test.loopback.world:8080.  
+ This will use the directory name as the part of the domain name.  So if you have a folder called ```test/public``` 
+ it will be served as http://test.loopback.world:8080.  
  
  ### Example URL to Folder mappings:
  
- http:\\test.loopback.world:8080\index.php  ==> test\public\index.php
+ http://test.loopback.world:8080/index.php  ==> test/public/index.php
  
- http:\\cat.loopback.world:8080\index.php ==> cat\public\index.php
+ http://cat.loopback.world:8080/index.php ==> cat/public/index.php
  
- http:\\cat.loopback.world:8080\dog.php ==> cat\public\dog.php
+ http://cat.loopback.world:8080/dog.php ==> cat/public/dog.php
  
  
  ## Usage Example docker-compose.yml
