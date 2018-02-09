@@ -11,41 +11,41 @@
 # container, without having to understand how to connect and
 # maintain separate services.
 #
-FROM php:7.1-apache
+FROM jstormes/lamp:stable
 MAINTAINER You
 
 # Install PHP libraries
-RUN docker-php-ext-install pdo pdo_mysql mysqli
-
-# Enable Apache ReWrite and SSL
-RUN a2enmod rewrite ssl
-
-# Add MariaDb
-RUN apt-get update
-RUN { \
-		echo "mariadb-server" mysql-server/root_password password 'naked'; \
-		echo "mariadb-server" mysql-server/root_password_again password 'naked'; \
-	} | debconf-set-selections \
-	&& apt-get install -y mariadb-server
-
-# Add CRON
-RUN apt-get install -y cron
-
-WORKDIR /var/www
-EXPOSE 443 80
-
-# Add Tini
-ENV TINI_VERSION v0.16.1
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
-
-# Add custom init script
-ADD bash_scripts/init.sh /etc/init.sh
-RUN chmod +x /etc/init.sh
-
-# Run your init under Tini
-CMD ["bash", "/etc/init.sh"]
+#RUN docker-php-ext-install pdo pdo_mysql mysqli
+#
+## Enable Apache ReWrite and SSL
+#RUN a2enmod rewrite ssl
+#
+## Add MariaDb
+#RUN apt-get update
+#RUN { \
+#		echo "mariadb-server" mysql-server/root_password password 'naked'; \
+#		echo "mariadb-server" mysql-server/root_password_again password 'naked'; \
+#	} | debconf-set-selections \
+#	&& apt-get install -y mariadb-server
+#
+## Add CRON
+#RUN apt-get install -y cron
+#
+#WORKDIR /var/www
+#EXPOSE 443 80
+#
+## Add Tini
+#ENV TINI_VERSION v0.16.1
+#ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+#RUN chmod +x /tini
+#ENTRYPOINT ["/tini", "--"]
+#
+## Add custom init script
+#ADD bash_scripts/init.sh /etc/init.sh
+#RUN chmod +x /etc/init.sh
+#
+## Run your init under Tini
+#CMD ["bash", "/etc/init.sh"]
 
 
 
@@ -103,12 +103,12 @@ ENV PATH /root/bin:$PATH
 
 
 # Add PHPmyadmin
-ADD https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-english.tar.gz /var
-RUN mkdir /var/phpmyadmin \
-    && tar -xvzf /var/phpMyAdmin-latest-english.tar.gz -C /var/phpmyadmin  --strip-components=1 \
-    && rm -f /var/phpMyAdmin-latest-english.tar.gz
-ADD apache_assets/000-phpmyadmin.conf /etc/apache2/sites-enabled/
-ADD phpmyadmin_config/config.inc.php /var/phpmyadmin/
+#ADD https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-english.tar.gz /var
+#RUN mkdir /var/phpmyadmin \
+#    && tar -xvzf /var/phpMyAdmin-latest-english.tar.gz -C /var/phpmyadmin  --strip-components=1 \
+#    && rm -f /var/phpMyAdmin-latest-english.tar.gz
+#ADD apache_assets/000-phpmyadmin.conf /etc/apache2/sites-enabled/
+#ADD phpmyadmin_config/config.inc.php /var/phpmyadmin/
 
 
 
