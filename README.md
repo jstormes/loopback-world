@@ -10,7 +10,18 @@ A LAMP development docker container with Apache VHost and built in *.loopback.wo
  
  To server all the folders under the current working directory to *.loopback.world:
  
+ BASH:
+ 
+ ```docker run -it -p 8080:80 -v $(pwd):/var/www jstormes/loopback-world```
+ 
+ PowerShell
+ 
  ```docker run -it -p 8080:80 -v ${PWD}:/var/www jstormes/loopback-world```
+ 
+ Windows CMD
+ 
+ ```docker run -it -p 8080:80 -v %cd%:/var/www jstormes/loopback-world```
+ 
  
  This will use the directory name as the part of the domain name.  So if you have a folder called ```test\public``` 
  it will be served as http:\\test.loopback.world:8080.  
@@ -22,5 +33,8 @@ A LAMP development docker container with Apache VHost and built in *.loopback.wo
  http:\\cat.loopback.world:8080\index.php ==> cat\public\index.php
  
  http:\\cat.loopback.world:8080\dog.php ==> cat\public\dog.php
+ 
+ 
+ ## Usage Example docker-compose.yml
  
  
