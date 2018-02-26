@@ -35,7 +35,10 @@ RUN apt-get update \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini \
  && a2enmod vhost_alias \
  && rm -fr /etc/apache2/sites-enabled/* \
- && rm installer
+ && rm installer \
+ && apt-get autoremove \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 # Apache config
 ADD apache_assets/100-loopback-world-ssl.conf /etc/apache2/sites-enabled/
