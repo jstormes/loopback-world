@@ -12,7 +12,7 @@
 # maintain separate services.
 #
 
-FROM jstormes/lamp:stable
+FROM jstormes/lamp:5
 MAINTAINER James Stormes <jstormes@stormes.net>
 
 # Install Linux tools, PHP Composer, PHP tools, XDebug, and Apache's vhost alias.
