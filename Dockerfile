@@ -43,11 +43,12 @@ RUN apt-get update \
  && apt-get autoremove \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* \
- && echo "* * * * *  root  cd /var/www && run-parts --report /var/www/cron/minutely" >> /etc/crontab \
- && echo "17 * * * * root  cd /var/www && run-parts --report /var/www/cron/hourly" >> /etc/crontab \
- && echo "25 6 * * * root  cd /var/www && run-parts --report /var/www/cron/daily" >> /etc/crontab \
- && echo "47 6 * * 7 root  cd /var/www && run-parts --report /var/www/cron/weekly" >> /etc/crontab \
- && echo "52 6 1 * * root  cd /var/www && run-parts --report /var/www/cron/monthly" >> /etc/crontab
+ && echo "* *   * * *   root    cd /var/www && run-parts --report /var/www/cron/minutely" >> /etc/crontab \
+ && echo "17 *  * * *   root    cd /var/www && run-parts --report /var/www/cron/hourly" >> /etc/crontab \
+ && echo "25 6  * * *   root    cd /var/www && run-parts --report /var/www/cron/daily" >> /etc/crontab \
+ && echo "47 6  * * 7   root    cd /var/www && run-parts --report /var/www/cron/weekly" >> /etc/crontab \
+ && echo "52 6  1 * *   root    cd /var/www && run-parts --report /var/www/cron/monthly" >> /etc/crontab \
+ && echo ""  >> /etc/crontab
 
 # Apache config
 ADD apache_assets/100-loopback-world-ssl.conf /etc/apache2/sites-enabled/
