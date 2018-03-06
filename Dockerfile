@@ -59,6 +59,8 @@ ADD apache_assets/site.key /etc/ssl/certs/
 ADD apache_assets/site.crt /etc/ssl/certs/
 ADD apache_assets/gsalphasha2g2r1.crt /etc/ssl/certs/
 
+EXPOSE 443 80 
+
 # Install custom .bashrc
 ADD bash_scripts/bashrc.sh /root/.bashrc
 # Add our script files so they can be found
