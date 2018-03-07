@@ -47,8 +47,8 @@ RUN apt-get update \
  && echo "17 *  * * *   root    cd /var/www && run-parts --report /var/www/cron/hourly >> /var/log/cron.log 2>&1" >> /etc/crontab \
  && echo "25 6  * * *   root    cd /var/www && run-parts --report /var/www/cron/daily >> /var/log/cron.log 2>&1" >> /etc/crontab \
  && echo "47 6  * * 7   root    cd /var/www && run-parts --report /var/www/cron/weekly >> /var/log/cron.log 2>&1" >> /etc/crontab \
- && echo "52 6  1 * *   root    cd /var/www && run-parts --report /var/www/cron/monthly >> /var/log/cron.log 2>&1brb" >> /etc/crontab \
- && echo ""  >> /etc/crontab
+ && echo "52 6  1 * *   root    cd /var/www && run-parts --report /var/www/cron/monthly >> /var/log/cron.log 2>&1" >> /etc/crontab \
+ && echo " "  >> /etc/crontab
 
 # Apache config
 ADD apache_assets/100-loopback-world-ssl.conf /etc/apache2/sites-enabled/
@@ -59,7 +59,7 @@ ADD apache_assets/site.key /etc/ssl/certs/
 ADD apache_assets/site.crt /etc/ssl/certs/
 ADD apache_assets/gsalphasha2g2r1.crt /etc/ssl/certs/
 
-EXPOSE 443 80 
+EXPOSE 443 80
 
 # Install custom .bashrc
 ADD bash_scripts/bashrc.sh /root/.bashrc
