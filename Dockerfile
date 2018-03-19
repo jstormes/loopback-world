@@ -67,7 +67,8 @@ ADD bash_scripts/bashrc.sh /root/.bashrc
 # Add our script files so they can be found
 ENV PATH /root/bin:$PATH
 
-ENV BASH_ENV /root/.bashrc
+ADD bash_scripts/copy_sshkey.sh /root/.copy_sshkey.sh
+ENV BASH_ENV /root/.copy_sshkey.sh
 
 
 
