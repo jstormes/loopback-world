@@ -49,7 +49,8 @@ RUN apt-get update \
  && echo "47 6  * * 7   root    cd /var/www && run-parts --report /var/www/cron/weekly >> /var/log/cron.log 2>&1" >> /etc/crontab \
  && echo "52 6  1 * *   root    cd /var/www && run-parts --report /var/www/cron/monthly >> /var/log/cron.log 2>&1" >> /etc/crontab \
  && echo "0 */4 * * *   root    cd /var/www && run-parts --report /var/www/cron/fourhour >> /var/log/cron.log 2>&1" >> /etc/crontab \
- && echo " "  >> /etc/crontab
+ && echo " "  >> /etc/crontab \
+ && sed -i -e 's/bind-address\t\t= 127.0.0.1/bind-address\t\t= 0.0.0.0/g' /etc/mysql/my.cnf
 
 # Apache config
 ADD apache_assets/100-loopback-world-ssl.conf /etc/apache2/sites-enabled/
