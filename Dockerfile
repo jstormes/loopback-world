@@ -50,7 +50,7 @@ RUN apt-get update \
  && echo "52 6  1 * *   root    cd /var/www && run-parts --report /var/www/cron/monthly >> /var/log/cron.log 2>&1" >> /etc/crontab \
  && echo "0 */4 * * *   root    cd /var/www && run-parts --report /var/www/cron/fourhour >> /var/log/cron.log 2>&1" >> /etc/crontab \
  && echo " "  >> /etc/crontab \
- && sed -i -e 's/bind-address\t\t= 127.0.0.1/bind-address\t\t= 0.0.0.0/g' /etc/mysql/my.cnf \
+ && sed -i '/bind-address/c\bind-address\t\t= 0.0.0.0' /etc/mysql/my.cnf \
  && /bin/bash -c "/usr/bin/mysqld_safe &" \
  && sleep 5 \
  && mysql -u root -pnaked -e "CREATE USER 'root'@'%' IDENTIFIED BY 'naked';" \
