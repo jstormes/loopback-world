@@ -23,7 +23,7 @@ sleep 1
 
 type /root/.copy_sshkey.sh &>/dev/null && /root/.copy_sshkey.sh
 
-export PATH="/var/www/_docker/bin:$PATH"
+export PATH="/var/www/.bin:$PATH"
 
 
 echo
