@@ -10,13 +10,13 @@ if [ ! -f ~/.ssh/id_rsa ]; then
         echo "###########################################################################"
         echo "# WARNING!!!!"
         echo "# SSH Deploy key was copied into docker image.  You should NOT push this image"
-        echo "# to a Docker repo!"
+        echo "# to a Docker repo unless you delete it!!!!"
         echo "###########################################################################"
     else
         echo "###########################################################################"
         echo "# SSH Deploy Key not found!!!"
-        echo "# file not found: \\var\\www\\ssh\\id_rsa"
-        echo "# Copy a valid id_rsh key file into _ssh if you need to use secure git."
+        echo "# file not found: \\var\\www\\.ssh\\id_rsa"
+        echo "# Copy a valid id_rsh key file into .ssh if you need to use secure git."
         echo "###########################################################################"
     fi
 fi
