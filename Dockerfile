@@ -61,7 +61,7 @@ RUN apt-get update \
 ADD apache_assets/100-loopback-world-ssl.conf /etc/apache2/sites-enabled/
 ADD apache_assets/100-loopback-world.conf /etc/apache2/sites-enabled/
 
-# Copy "*.loopback.world" cert into container.  Might be better to link it.
+# Copy "*.loopback.world" cert into container.
 ADD apache_assets/site.key /etc/ssl/certs/
 ADD apache_assets/site.crt /etc/ssl/certs/
 ADD apache_assets/gsalphasha2g2r1.crt /etc/ssl/certs/
@@ -76,6 +76,11 @@ ENV PATH /root/bin:~/.composer/vendor/bin:$PATH
 ADD bash_scripts/copy_sshkey.sh /root/.copy_sshkey.sh
 ENV BASH_ENV /root/.copy_sshkey.sh
 
+# Varables to make LAMP development easer.
+ENV XDEBUG_CONFIG remote_host=host.docker.internal remote_port=9000 remote_autostart=1
+ENV MYSQL_PWD naked
+ENV MYSQL_USER root
+ENV MYSQL_HOST localhost
 
 
 
