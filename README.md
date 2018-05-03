@@ -34,7 +34,17 @@ A LAMP development docker container with Apache VHost and built in *.loopback.wo
  
  http://cat.loopback.world:8080/dog.php ==> cat/public/dog.php
  
+ ### JSON logging in Apache2
+ 
+ From inside the Docker bash prompt you can query the apache json formatted logs:
+ 
+ * Formatting a json log
+     * `jq --slurp . /var/log/apache2/json.log`
+ * Tailing a json log
+     * `tail -f /var/log/apache2/json.log | jq`
+ 
  
  ## Usage Example docker-compose.yml
+ 
  
  
