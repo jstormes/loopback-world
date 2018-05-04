@@ -8,29 +8,38 @@ A LAMP development docker container with Apache VHost and built in *.loopback.wo
  
  ## Usage Examples CLI
  
- To server all the folders under the current working directory to *.loopback.world:
+ To serve all the folders under the current working directory to *.loopback.world:
  
- BASH:
+ BASH
  
- ```docker run -it -p 443:443 -v $(pwd):/var/www jstormes/loopback-world```
+```
+cd (Path to project)
+docker run -it -p 443:443 -v $(pwd):/var/www jstormes/loopback-world
+```
  
  PowerShell
  
- ```docker run -it -p 443:443 -v ${PWD}:/var/www jstormes/loopback-world```
+```
+cd (Path to project)
+docker run -it -p 443:443 -v ${PWD}:/var/www jstormes/loopback-world
+```
  
  Windows CMD
  
- ```docker run -it -p 443:443 -v %cd%:/var/www jstormes/loopback-world```
+```
+cd (Path to project)
+docker run -it -p 443:443 -v %cd%:/var/www jstormes/loopback-world
+```
  
  
  This will use the directory name as the part of the domain name.  So if you have a folder called ```test/public``` 
- it will be served as http://test.loopback.world:8080.  
+ it will be served as https://test.loopback.world.  
  
  ### Example URL to Folder routing:
  
- https://test.loopback.world/index.php  ==> test/public/index.php
+ https://test.loopback.world  ==> test/public/index.php
  
- https://cat.loopback.world/index.php ==> cat/public/index.php
+ https://cat.loopback.world ==> cat/public/index.php
  
  https://cat.loopback.world/dog.php ==> cat/public/dog.php
  
