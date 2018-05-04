@@ -12,15 +12,15 @@ A LAMP development docker container with Apache VHost and built in *.loopback.wo
  
  BASH:
  
- ```docker run -it -p 8080:80 -v $(pwd):/var/www jstormes/loopback-world```
+ ```docker run -it -p 443:443 -v $(pwd):/var/www jstormes/loopback-world```
  
  PowerShell
  
- ```docker run -it -p 8080:80 -v ${PWD}:/var/www jstormes/loopback-world```
+ ```docker run -it -p 443:443 -v ${PWD}:/var/www jstormes/loopback-world```
  
  Windows CMD
  
- ```docker run -it -p 8080:80 -v %cd%:/var/www jstormes/loopback-world```
+ ```docker run -it -p 443:443 -v %cd%:/var/www jstormes/loopback-world```
  
  
  This will use the directory name as the part of the domain name.  So if you have a folder called ```test/public``` 
@@ -28,11 +28,11 @@ A LAMP development docker container with Apache VHost and built in *.loopback.wo
  
  ### Example URL to Folder routing:
  
- http://test.loopback.world:8080/index.php  ==> test/public/index.php
+ https://test.loopback.world/index.php  ==> test/public/index.php
  
- http://cat.loopback.world:8080/index.php ==> cat/public/index.php
+ https://cat.loopback.world/index.php ==> cat/public/index.php
  
- http://cat.loopback.world:8080/dog.php ==> cat/public/dog.php
+ https://cat.loopback.world/dog.php ==> cat/public/dog.php
  
  ### JSON logging in Apache2
  
@@ -63,7 +63,6 @@ A LAMP development docker container with Apache VHost and built in *.loopback.wo
          PHP_IDE_CONFIG: serverName=host.docker.internal
          APPLICATION_ENV: "local"
      ports:
-       - 80:80
        - 443:443
        - 4000:3306
      volumes:
