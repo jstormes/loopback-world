@@ -12,13 +12,13 @@
 # maintain separate services.
 #
 
-FROM jstormes/lamp:7
+FROM jstormes/lamp:5
 MAINTAINER James Stormes <jstormes@stormes.net>
 
 # Install Linux tools, PHP Composer, PHP tools, XDebug, and Apache's vhost alias.
 # Remove all Aapche enabled sites.
 RUN apt-get update \
- && apt-get install -y net-tools curl wget git zip unzip mariadb-client joe gnupg2 jq \
+ && apt-get install -y net-tools curl wget git zip unzip mariadb-client joe \
  && wget https://getcomposer.org/installer \
  && php installer \
  && mv composer.phar /usr/local/bin/composer \
@@ -33,7 +33,7 @@ RUN apt-get update \
     && apt-get install -y nodejs build-essential \
     && npm -g install grunt-cli nano yarn \
     && echo '{ "allow_root": true }' > /root/.bowerrc \
- && yes | pecl install xdebug \
+ && yes | pecl install xdebug-2.5.5 \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini \
@@ -61,13 +61,11 @@ RUN apt-get update \
 # Apache config
 ADD apache_assets/100-loopback-world-ssl.conf /etc/apache2/sites-enabled/
 ADD apache_assets/100-loopback-world.conf /etc/apache2/sites-enabled/
-ADD apache_assets/json_log_format.conf /etc/apache2/conf-enabled/
 
 # Copy "*.loopback.world" cert into container.
 ADD apache_assets/site.key /etc/ssl/certs/
 ADD apache_assets/site.crt /etc/ssl/certs/
 ADD apache_assets/gsalphasha2g2r1.crt /etc/ssl/certs/
-
 
 EXPOSE 443 80 3306
 
