@@ -74,6 +74,7 @@ docker run -it -p 443:443 -v %cd%:/var/www jstormes/loopback-world
      ports:
        - 443:443
        - 4000:3306
+       - 80:80
      volumes:
        - ./data:/data
        - ./:/var/www
