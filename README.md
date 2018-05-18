@@ -1,5 +1,9 @@
+
+
 # loopback-world
 A LAMP development docker container with Apache VHost and built in *.loopback.world HTTPS cert.
+
+[![dockeri.co](http://dockeri.co/image/jstormes/loopback-world)](https://hub.docker.com/r/jstormes/loopback-world/)
  
  ## About
  
