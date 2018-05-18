@@ -12,7 +12,7 @@
 # maintain separate services.
 #
 
-FROM jstormes/lamp:5
+FROM jstormes/lamp:7
 MAINTAINER James Stormes <jstormes@stormes.net>
 
 # Install Linux tools, PHP Composer, PHP tools, XDebug, and Apache's vhost alias.
@@ -33,7 +33,7 @@ RUN apt-get update \
     && apt-get install -y nodejs build-essential \
     && npm -g install grunt-cli nano yarn \
     && echo '{ "allow_root": true }' > /root/.bowerrc \
- && yes | pecl install xdebug-2.5.5 \
+ && yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini \
