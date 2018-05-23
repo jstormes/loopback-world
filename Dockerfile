@@ -18,7 +18,7 @@ MAINTAINER James Stormes <jstormes@stormes.net>
 # Install Linux tools, PHP Composer, PHP tools, XDebug, and Apache's vhost alias.
 # Remove all Aapche enabled sites.
 RUN apt-get update \
- && apt-get install -y net-tools curl wget git zip unzip mariadb-client joe \
+ && apt-get install -y net-tools curl wget git zip unzip mariadb-client joe gnupg2 \
  && wget https://getcomposer.org/installer \
  && php installer \
  && mv composer.phar /usr/local/bin/composer \
@@ -55,6 +55,7 @@ RUN apt-get update \
  && sleep 5 \
  && mysql -u root -pnaked -e "CREATE USER 'root'@'%' IDENTIFIED BY 'naked';" \
  && mysql -u root -pnaked -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' REQUIRE NONE WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;" \
+ && mysql -u root -pnaked -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'naked' WITH GRANT OPTION;" \
  && chmod -R a+rw /var/log/apache2 \
  && sed -Ei "s/bind-address.*/bind-address=0.0.0.0/g" /etc/mysql/mariadb.conf.d/50-server.cnf
 
