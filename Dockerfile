@@ -57,7 +57,7 @@ RUN apt-get update \
  && mysql -u root -pnaked -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' REQUIRE NONE WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;" \
  && mysql -u root -pnaked -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'naked' WITH GRANT OPTION;" \
  && chmod -R a+rw /var/log/apache2 \
- && sed -Ei "s/bind-address.*/bind-address=0.0.0.0/g" /etc/mysql/mariadb.conf.d/50-server.cnf
+ && echo "bind-address=0.0.0.0" > /etc/mysql/conf.d/50-server.cnf
 
 
 # Apache config
