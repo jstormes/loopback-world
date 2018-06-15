@@ -37,7 +37,7 @@ RUN apt-get update \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini \
- && a2enmod vhost_alias \
+ && a2enmod vhost_alias http2 \
  && rm -fr /etc/apache2/sites-enabled/* \
  && rm installer \
  && apt-get autoremove \
