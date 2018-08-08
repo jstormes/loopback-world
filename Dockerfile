@@ -18,7 +18,8 @@ MAINTAINER James Stormes <jstormes@stormes.net>
 # Install Linux tools, PHP Composer, PHP tools, XDebug, and Apache's vhost alias.
 # Remove all Aapche enabled sites.
 RUN apt-get update \
- && apt-get install -y net-tools curl wget git zip unzip mariadb-client joe gnupg2 \
+ && apt-get install -y net-tools curl wget git zip unzip zlib1g-dev mariadb-client joe gnupg2 \
+ && docker-php-ext-install zip \
  && wget https://getcomposer.org/installer \
  && php installer \
  && mv composer.phar /usr/local/bin/composer \
