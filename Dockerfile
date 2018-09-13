@@ -40,6 +40,8 @@ RUN apt-get update \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini \
  && yes '' | pecl install -f redis \
+ && rm -rf /tmp/pear \
+ && docker-php-ext-enable redis \
  && a2enmod vhost_alias http2 headers \
  && rm -fr /etc/apache2/sites-enabled/* \
  && rm installer \
