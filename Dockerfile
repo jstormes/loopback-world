@@ -18,7 +18,7 @@ MAINTAINER James Stormes <jstormes@stormes.net>
 # Install Linux tools, PHP Composer, PHP tools, XDebug, and Apache's vhost alias.
 # Remove all Aapche enabled sites.
 RUN apt-get update \
- && apt-get install -y net-tools curl wget git zip unzip zlib1g-dev libpng-dev mariadb-client joe gnupg2 libldap2-dev inetutils-ping gettext \
+ && apt-get install -y net-tools curl wget git zip unzip zlib1g-dev libpng-dev mariadb-client joe gnupg2 libldap2-dev inetutils-ping gettext ssl-cert \
  && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
  && docker-php-ext-install gd zip ldap gettext \
  && wget https://getcomposer.org/installer \
@@ -73,6 +73,22 @@ ADD apache_assets/100-loopback-world.conf /etc/apache2/sites-enabled/
 ADD apache_assets/site.key /etc/ssl/certs/
 ADD apache_assets/site.crt /etc/ssl/certs/
 ADD apache_assets/gsalphasha2g2r1.crt /etc/ssl/certs/
+
+ADD assets/ldap/ssl.ldif /etc/ldap/
+ADD assets/ssl/certs/loopback.world.cert.pem /etc/ssl/certs/
+ADD assets/ssl/certs/loopback.world.fullchain.pem /etc/ssl/certs/
+ADD assets/ssl/private/loopback.world.privkey.pem /etc/ssl/private/
+RUN chown :ssl-cert /etc/ssl/private/loopback.world.privkey.pem \
+ && chmod 640 /etc/ssl/private/loopback.world.privkey.pem \
+ && usermod -aG ssl-cert openldap \
+ && echo "BASE    dc=loopback,dc=world" >>  /etc/ldap/ldap.conf \
+ && echo "URI     ldap://loopback.world" >>  /etc/ldap/ldap.conf \
+ && echo "TLSCACertificateFile /etc/ssl/certs/loopback.world.fullchain.pem" >> /etc/ldap/ldap.conf \
+ && echo "TLSCertificateFile /etc/ssl/certs/loopback.world.cert.pem" >> /etc/ldap/ldap.conf \
+ && echo "TLSCertificateKeyFile /etc/ssl/private/loopback.world.privkey.pem" >> /etc/ldap/ldap.conf
+RUN /bin/bash -c "service slapd start" \
+ && sleep 10 \
+ && ldapmodify -H ldapi:// -Y EXTERNAL -f /etc/ldap/ssl.ldif
 
 EXPOSE 443 80 3306
 
