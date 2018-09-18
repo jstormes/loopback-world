@@ -89,6 +89,7 @@ EXPOSE 443 80 3306
 
 # Install custom .bashrc
 ADD assets/scripts/bashrc.sh /root/.bashrc
+
 # Add our script files so they can be found
 ENV PATH /root/bin:~/.composer/vendor/bin:$PATH
 

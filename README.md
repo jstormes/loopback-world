@@ -1,7 +1,8 @@
 
 
 # loopback-world
-A LAMP development docker container with Apache VHost and built in *.loopback.world HTTPS cert.
+
+ A LAMP development docker container with Apache VHost and built in *.loopback.world HTTPS cert.
 
 [![dockeri.co](http://dockeri.co/image/jstormes/loopback-world)](https://hub.docker.com/r/jstormes/loopback-world/)
  
@@ -14,7 +15,9 @@ A LAMP development docker container with Apache VHost and built in *.loopback.wo
 
 Install Docker CE.
 
-Clone this project.
+Clone this project.  
+
+Open a command prompt into the project directory.
 
 Windows `.\run.ps1`
 
@@ -24,13 +27,21 @@ Open your browser to https:\\info.loopback.world
 
 Use git submodules to pull your code into the project.
 
+### Example URL to Folder routing:
+ 
+ https://test.loopback.world  ==> test/public/index.php
+ 
+ https://cat.loopback.world ==> cat/public/index.php
+ 
+ https://cat.loopback.world/dog.php ==> cat/public/dog.php
+
 ## Built in Tools
 
 MySQL - https:\\sql.loopback.world
 
 Redis - https:\\redis.loopback.world
 
-LDAP = https:\\ldap.loopback.world
+LDAP - https:\\ldap.loopback.world
  
 ## Usage Examples CLI
  
@@ -57,19 +68,10 @@ cd (Path to project)
 docker run -it -p 443:443 -v %cd%:/var/www jstormes/loopback-world
 ```
  
- 
  This will use the directory name as the part of the domain name.  So if you have a folder called ```info/public``` 
  it will be served as https://info.loopback.world.  
  
-### Example URL to Folder routing:
- 
- https://test.loopback.world  ==> test/public/index.php
- 
- https://cat.loopback.world ==> cat/public/index.php
- 
- https://cat.loopback.world/dog.php ==> cat/public/dog.php
- 
- 
+
 ## Usage Example docker-compose.yml
  
 ```
