@@ -34,7 +34,9 @@ $cfg['Servers'][$i]['user'] = 'root';
 $cfg['Servers'][$i]['password'] = 'naked';
 $cfg['Servers'][$i]['auth_type'] = 'config';
 $cfg['Servers'][$i]['compress'] = false;
+$cfg['CheckConfigurationPermissions'] = false;
 #$cfg['Servers'][$i]['AllowNoPassword'] = false;
+$cfg['Servers'][$i]['hide_db'] = '^(information_schema|mysql|performance_schema)$';
 
 /**
  * phpMyAdmin configuration storage settings.
@@ -75,7 +77,7 @@ $cfg['Servers'][$i]['compress'] = false;
 /**
  * Directories for saving/loading files from server
  */
-$cfg['UploadDir'] = '';
+$cfg['UploadDir'] = '/var/www/sql';
 $cfg['SaveDir'] = '';
 
 /**

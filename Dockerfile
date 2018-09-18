@@ -18,87 +18,100 @@ MAINTAINER James Stormes <jstormes@stormes.net>
 # Install Linux tools, PHP Composer, PHP tools, XDebug, and Apache's vhost alias.
 # Remove all Aapche enabled sites.
 RUN apt-get update \
- && apt-get install -y net-tools curl wget git zip unzip zlib1g-dev libpng-dev mariadb-client joe gnupg2 libldap2-dev inetutils-ping gettext ssl-cert \
+ && apt-get install -y net-tools curl wget git zip unzip zlib1g-dev libpng-dev mariadb-client \
+    joe gnupg2 libldap2-dev inetutils-ping gettext ssl-cert \
  && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
  && docker-php-ext-install gd zip ldap gettext \
  && wget https://getcomposer.org/installer \
- && php installer \
- && mv composer.phar /usr/local/bin/composer \
- && composer global require phpunit/phpunit \
-   phpunit/dbunit \
-   phing/phing \
-   sebastian/phpcpd \
-   phploc/phploc \
-   phpmd/phpmd \
-   squizlabs/php_codesniffer \
- && curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-    && apt-get install -y nodejs build-essential \
-    && npm -g install grunt-cli nano yarn \
-    && echo '{ "allow_root": true }' > /root/.bowerrc \
+    && php installer \
+    && mv composer.phar /usr/local/bin/composer \
+    && composer global require phpunit/phpunit \
+       phpunit/dbunit \
+       phing/phing \
+       sebastian/phpcpd \
+       phploc/phploc \
+       phpmd/phpmd \
+       squizlabs/php_codesniffer \
+    && rm installer \
  && yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini \
  && yes '' | pecl install -f redis \
- && rm -rf /tmp/pear \
- && docker-php-ext-enable redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable redis \
+ && curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+    && apt-get install -y nodejs build-essential \
+    && npm -g install grunt-cli nano yarn \
+    && echo '{ "allow_root": true }' > /root/.bowerrc \
  && a2enmod vhost_alias http2 headers \
  && rm -fr /etc/apache2/sites-enabled/* \
- && rm installer \
  && apt-get autoremove \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* \
- && echo "* *   * * *   root    cd /var/www && run-parts --report /var/www/cron/minutely >> /var/log/cron.log 2>&1" >> /etc/crontab \
- && echo "17 *  * * *   root    cd /var/www && run-parts --report /var/www/cron/hourly >> /var/log/cron.log 2>&1" >> /etc/crontab \
- && echo "25 6  * * *   root    cd /var/www && run-parts --report /var/www/cron/daily >> /var/log/cron.log 2>&1" >> /etc/crontab \
- && echo "47 6  * * 7   root    cd /var/www && run-parts --report /var/www/cron/weekly >> /var/log/cron.log 2>&1" >> /etc/crontab \
- && echo "52 6  1 * *   root    cd /var/www && run-parts --report /var/www/cron/monthly >> /var/log/cron.log 2>&1" >> /etc/crontab \
- && echo "0 */4 * * *   root    cd /var/www && run-parts --report /var/www/cron/fourhour >> /var/log/cron.log 2>&1" >> /etc/crontab \
- && echo " "  >> /etc/crontab \
- && sed -i '/bind-address/c\bind-address\t\t= 0.0.0.0' /etc/mysql/my.cnf \
  && /bin/bash -c "/usr/bin/mysqld_safe &" \
- && sleep 5 \
- && mysql -u root -pnaked -e "CREATE USER 'root'@'%' IDENTIFIED BY 'naked';" \
- && mysql -u root -pnaked -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' REQUIRE NONE WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;" \
- && mysql -u root -pnaked -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'naked' WITH GRANT OPTION;" \
- && chmod -R a+rw /var/log/apache2 \
- && sed -Ei "s/bind-address.*/bind-address=0.0.0.0/g" /etc/mysql/mariadb.conf.d/50-server.cnf
-
+    && sleep 5 \
+    && mysql -u root -pnaked -e "CREATE USER 'root'@'%' IDENTIFIED BY 'naked';" \
+    && mysql -u root -pnaked -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' REQUIRE NONE WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;" \
+    && mysql -u root -pnaked -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'naked' WITH GRANT OPTION;" \
+    && sed -i '/bind-address/c\bind-address\t\t= 0.0.0.0' /etc/mysql/my.cnf \
+    && sed -Ei "s/bind-address.*/bind-address=0.0.0.0/g" /etc/mysql/mariadb.conf.d/50-server.cnf \
+ && chmod -R a+rw /var/log/apache2
 
 # Apache config
-ADD apache_assets/100-loopback-world-ssl.conf /etc/apache2/sites-enabled/
-ADD apache_assets/100-loopback-world.conf /etc/apache2/sites-enabled/
+ADD assets/apache2/sites/100-loopback-world-ssl.conf /etc/apache2/sites-enabled/
+ADD assets/apache2/sites/100-loopback-world.conf /etc/apache2/sites-enabled/
 
-# Copy "*.loopback.world" cert into container.
-ADD apache_assets/site.key /etc/ssl/certs/
-ADD apache_assets/site.crt /etc/ssl/certs/
-ADD apache_assets/gsalphasha2g2r1.crt /etc/ssl/certs/
-
+# LDAP Config
 ADD assets/ldap/ssl.ldif /etc/ldap/
+ADD assets/ldap/ldap.conf /etc/ldap/
+
+# CRON Config
+ADD assets/cron/crontab /etc/
+
+# Add certificates
 ADD assets/ssl/certs/loopback.world.cert.pem /etc/ssl/certs/
 ADD assets/ssl/certs/loopback.world.fullchain.pem /etc/ssl/certs/
 ADD assets/ssl/private/loopback.world.privkey.pem /etc/ssl/private/
+
+
+# Final adjustments to to image
 RUN chown :ssl-cert /etc/ssl/private/loopback.world.privkey.pem \
  && chmod 640 /etc/ssl/private/loopback.world.privkey.pem \
  && usermod -aG ssl-cert openldap \
- && echo "BASE    dc=loopback,dc=world" >>  /etc/ldap/ldap.conf \
- && echo "URI     ldap://loopback.world" >>  /etc/ldap/ldap.conf \
- && echo "TLSCACertificateFile /etc/ssl/certs/loopback.world.fullchain.pem" >> /etc/ldap/ldap.conf \
- && echo "TLSCertificateFile /etc/ssl/certs/loopback.world.cert.pem" >> /etc/ldap/ldap.conf \
- && echo "TLSCertificateKeyFile /etc/ssl/private/loopback.world.privkey.pem" >> /etc/ldap/ldap.conf
-RUN /bin/bash -c "service slapd start" \
- && sleep 10 \
- && ldapmodify -H ldapi:// -Y EXTERNAL -f /etc/ldap/ssl.ldif
+ && usermod -aG ssl-cert www-data \
+ && /bin/bash -c "service slapd start" \
+    && sleep 10 \
+    && ldapmodify -H ldapi:// -Y EXTERNAL -f /etc/ldap/ssl.ldif
+
 
 EXPOSE 443 80 3306
 
 # Install custom .bashrc
-ADD bash_scripts/bashrc.sh /root/.bashrc
+ADD assets/scripts/bashrc.sh /root/.bashrc
 # Add our script files so they can be found
 ENV PATH /root/bin:~/.composer/vendor/bin:$PATH
 
-ADD bash_scripts/copy_sshkey.sh /root/.copy_sshkey.sh
-ENV BASH_ENV /root/.copy_sshkey.sh
+# Script to add deply key to enviorment:
+ADD assets/scripts/copy_sshkey.sh /root/.copy_sshkey.sh
+
+RUN mkdir /var/tools \
+ && git clone https://github.com/breisig/phpLDAPadmin.git /var/tools/phpLDAPadmin \
+ && git clone https://github.com/erikdubbelboer/phpRedisAdmin.git /var/tools/phpRedisAdmin \
+    && cd /var/tools/phpRedisAdmin \
+    && composer -n --no-ansi --optimize-autoloader install \
+ && git clone https://github.com/phpmyadmin/phpmyadmin.git /var/tools/phpmyadmin \
+    && cd /var/tools/phpmyadmin \
+    && composer -n --no-ansi --optimize-autoloader install \
+    && mkdir tmp \
+    && chmod a+rw tmp
+
+ADD assets/tools/apache2/sites/ /etc/apache2/sites-enabled/
+ADD assets/tools/apache2/tools.conf /etc/apache2/conf-enabled
+ADD assets/tools/phpMyAdmin/config.inc.php /var/tools/phpmyadmin
+ADD assets/tools/phpLDAPadmin/config.php /var/tools/phpLDAPadmin/config
+
+
 
 # Varables to make LAMP development easer.
 ENV XDEBUG_CONFIG remote_host=host.docker.internal remote_port=9000 remote_autostart=1
