@@ -137,8 +137,7 @@ RUN chmod u+x /root/.bashrc
 # Add our script files so they can be found
 ENV PATH /root/bin:~/.composer/vendor/bin:$PATH
 
-# Script to add deply key to enviorment:
-ADD assets/scripts/copy_sshkey.sh /root/.copy_sshkey.sh
+
 
 RUN mkdir /var/tools \
  && git clone https://github.com/breisig/phpLDAPadmin.git /var/tools/phpLDAPadmin \
