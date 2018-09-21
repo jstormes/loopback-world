@@ -30,6 +30,7 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 
 # Add custom init script
 ADD assets/scripts/init.sh /etc/init.sh
+ADD assets/scripts/copy_sshkey.sh /root/.copy_sshkey.sh
 
 ADD assets/ldap/debconfig-set-selections.txt /etc/ldap
 
