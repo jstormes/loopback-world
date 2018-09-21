@@ -31,8 +31,10 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 # Add custom init script
 ADD assets/scripts/init.sh /etc/init.sh
 ADD assets/scripts/copy_sshkey.sh /root/.copy_sshkey.sh
-RUN chmod u+x /etc/init.sh \
-    && chmod u+x /root/.copy_sshkey.sh
+ADD assets/scripts/bashrc.sh /root/.bashrc
+RUN chmod a+x /etc/init.sh \
+    && chmod a+x /root/.copy_sshkey.sh \
+    && chmod a+x /root/.bashrc
 
 ADD assets/ldap/debconfig-set-selections.txt /etc/ldap
 
