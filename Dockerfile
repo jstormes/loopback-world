@@ -31,6 +31,8 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 # Add custom init script
 ADD assets/scripts/init.sh /etc/init.sh
 ADD assets/scripts/copy_sshkey.sh /root/.copy_sshkey.sh
+RUN chmod u+x /etc/init.sh \
+    && chmod u+x /root/.copy_sshkey.sh
 
 ADD assets/ldap/debconfig-set-selections.txt /etc/ldap
 
@@ -128,6 +130,7 @@ EXPOSE 443 80 3306
 
 # Install custom .bashrc
 ADD assets/scripts/bashrc.sh /root/.bashrc
+RUN chmod u+x /root/.bashrc
 
 # Add our script files so they can be found
 ENV PATH /root/bin:~/.composer/vendor/bin:$PATH
