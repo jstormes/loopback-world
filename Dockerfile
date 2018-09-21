@@ -12,8 +12,46 @@
 # maintain separate services.
 #
 
-FROM jstormes/lamp
+FROM php:7-apache
 MAINTAINER James Stormes <jstormes@stormes.net>
+
+
+############################################################################
+# Base requriments, this should be the simmiler between development, QA and
+# produciton.
+############################################################################
+
+
+############################################################################
+
+# Add Tini
+ENV TINI_VERSION v0.16.1
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+
+# Add custom init script
+ADD assets/scripts/init.sh /etc/init.sh
+
+ADD assets/ldap/debconfig-set-selections.txt /etc/ldap
+
+RUN docker-php-ext-install pdo pdo_mysql mysqli \
+    && a2enmod rewrite ssl \
+    && apt-get update \
+    && cat /etc/ldap/debconfig-set-selections.txt | debconf-set-selections \
+    && rm /etc/ldap/debconfig-set-selections.txt \
+    && apt-get install -y cron mariadb-server at redis-server slapd ldap-utils ldapscripts syslog-ng-core \
+    && chmod +x /tini \
+    && chmod +x /etc/init.sh \
+    && rm -f /var/log/apache2/access.log \
+    && rm -f /var/log/apache2/error.log \
+    && rm -f /var/log/apache2/other_vhosts_access.log \
+    && apt-get autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Run your init under Tini
+ENTRYPOINT ["/tini", "/etc/init.sh"]
+
+
 
 # Install Linux tools, PHP Composer, PHP tools, XDebug, and Apache's vhost alias.
 # Remove all Aapche enabled sites.
